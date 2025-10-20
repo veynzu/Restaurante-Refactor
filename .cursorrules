@@ -1,0 +1,126 @@
+# Reglas de Cursor para Proyecto de Restaurante
+
+## Stack Tecnológico y Principios Fundamentales
+
+### Framework Backend
+- **Spring Boot ÚNICAMENTE** - Todo el backend debe estar construido con Spring Boot
+- Usar la versión más reciente estable de Spring Boot
+- Seguir las mejores prácticas del ecosistema Spring
+
+### Principios de Desarrollo
+- **Clean Code**: Aplicar principios de código limpio en todo momento
+  - Nombres descriptivos y claros
+  - Funciones pequeñas con una sola responsabilidad
+  - Código autoexplicativo con comentarios solo cuando sea necesario
+  - Evitar duplicación de código (DRY)
+  - SOLID principles
+- **Escalabilidad**: El proyecto debe ser escalable
+  - Arquitectura en capas bien definida
+  - Bajo acoplamiento, alta cohesión
+  - Patrones de diseño apropiados
+  - Preparado para crecimiento futuro
+
+### Framework Frontend
+- **Angular 20 ÚNICAMENTE** - Todo el frontend debe usar Angular versión 20
+- NUNCA usar versiones anteriores de Angular
+- NUNCA usar funciones, métodos, sintaxis o APIs deprecadas de versiones antiguas
+- Seguir las mejores prácticas actuales de Angular 20
+- Usar standalone components (arquitectura moderna de Angular)
+- TypeScript con tipado estricto
+
+### Angular - Comunicación HTTP y APIs
+- **NUNCA usar RxJS** - Prohibido el uso de RxJS para manejo de observables
+- **Usar Angular Resources (Resource)** - Para operaciones CRUD principales
+- **Usar Fetch API nativo** - Para la mayoría de casos de comunicación HTTP
+- **Preferir async/await** - Sobre observables y promesas complejas
+- **Usar signals de Angular 20** - Para manejo de estado reactivo cuando sea necesario
+- **HTTP Client mínimo** - Solo usar HttpClient de Angular cuando sea absolutamente necesario
+
+### Política de Versiones
+- **PROHIBIDO usar versiones antiguas o deprecadas**
+- NUNCA implementar código de versiones anteriores
+- SIEMPRE verificar que las funciones, ciclos y llamados sean de la versión actual
+- Usar únicamente las APIs y sintaxis más recientes y recomendadas
+- Si una función está deprecada, NUNCA usarla
+
+## Reglas Generales de Lectura y Modificación
+
+1. **SIEMPRE leer el archivo completo antes de modificarlo** - Nunca modificar un archivo sin haberlo leído primero con read_file
+2. **SIEMPRE verificar la estructura del proyecto** antes de crear nuevos archivos
+3. **SIEMPRE revisar archivos relacionados** (modelos, servicios, repositorios) antes de crear código nuevo
+4. **NUNCA sobrescribir código existente** sin verificar su contenido primero
+
+## Reglas Específicas del Proyecto Spring Boot
+
+### Estructura de Paquetes
+- Mantener la estructura: `com.example.demo`
+- Organizar en subpaquetes: `model`, `repository`, `service`, `controller`, `dto`, `config`, `exception`
+
+### Convenciones de Código Java
+- Usar anotaciones de Spring Boot apropiadas (@RestController, @Service, @Repository, @Entity)
+- Implementar validación con @Valid y anotaciones de validación
+- Usar Lombok cuando sea apropiado para reducir boilerplate (@Data, @Builder, etc.)
+- Seguir convenciones de nombres Java (camelCase para métodos, PascalCase para clases)
+
+### Base de Datos (JPA/MySQL)
+- Todas las entidades deben tener @Entity y @Table
+- Usar @Id y @GeneratedValue apropiadamente
+- Definir relaciones con @OneToMany, @ManyToOne, @ManyToMany correctamente
+- Incluir cascade y fetch types explícitamente
+- Leer application.properties antes de modificar configuración de BD
+
+### APIs REST
+- Usar nomenclatura RESTful para endpoints
+- Implementar manejo de errores con @ExceptionHandler
+- Devolver ResponseEntity con códigos HTTP apropiados
+- Documentar endpoints con comentarios claros
+
+### Configuración
+- SIEMPRE leer application.properties antes de agregar nuevas configuraciones
+- Usar variables de entorno para información sensible
+- Documentar todas las propiedades personalizadas
+
+### Testing
+- Crear tests correspondientes al crear nuevos servicios o controladores
+- Usar @SpringBootTest para tests de integración
+- Usar @WebMvcTest para tests de controladores
+
+## Flujo de Trabajo Recomendado
+
+1. **Antes de crear una nueva entidad:**
+   - Leer el paquete model completo
+   - Verificar relaciones con otras entidades existentes
+   - Revisar application.properties para configuración de BD
+
+2. **Antes de crear un controlador:**
+   - Leer el servicio correspondiente
+   - Leer la entidad/modelo relacionado
+   - Revisar otros controladores existentes para mantener consistencia
+
+3. **Antes de crear un servicio:**
+   - Leer el repositorio correspondiente
+   - Leer la entidad/modelo relacionado
+   - Verificar dependencias con otros servicios
+
+4. **Antes de modificar application.properties:**
+   - Leer el archivo completo
+   - Verificar que no se dupliquen propiedades
+
+## Reglas de Seguridad
+
+- NUNCA incluir credenciales hardcodeadas
+- Usar variables de entorno para datos sensibles
+- Implementar validación de entrada en todos los endpoints
+
+## Documentación
+
+- Agregar comentarios JavaDoc a clases y métodos públicos
+- Mantener README.md actualizado con cambios significativos
+- Documentar decisiones arquitectónicas importantes
+
+## Manejo de Errores
+
+- Crear excepciones personalizadas en paquete exception
+- Implementar GlobalExceptionHandler con @ControllerAdvice
+- Devolver mensajes de error claros y estructurados
+
