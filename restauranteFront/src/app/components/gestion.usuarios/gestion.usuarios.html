@@ -1,0 +1,188 @@
+<div class="container">
+  <div class="row align-items-center mb-3">
+  <div class="col-sm-8">
+    <div class="p-3 bg-light border rounded shadow-sm">
+      <h4 class="mb-0">Gestión de Usuarios</h4>
+      <p class="mb-0">Resumen de las operaciones del restaurante.</p>
+    </div>
+  </div>
+  <div class="col-sm-4 text-sm-end text-center">
+    <div class="p-3 bg-light border rounded shadow-sm">
+      <button
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#nuevoUsuarioModal">
+        ➕ Añadir Nuevo Usuario
+      </button>
+    </div>
+  </div>
+</div>
+
+  <div class="row text-center mb-3 ">
+    <div class="col-sm-12 p-3 bg-light border rounded shadow-sm">
+      <form class="d-flex mt-3" role="search">
+          <input class="form-control me-2" type="search" placeholder="Buscar por nombre" aria-label="Search"/>
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+    </div>
+  </div>
+
+  <div class="row text-center mb-3">
+    <div class="col-sm-12">
+      <div class="p-3 bg-light border rounded shadow-sm">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Id Nombre</th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Email</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Rol</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            @if(usuarios){
+            @for(u of usuarios.value(); track u.idUsuario){
+              <tr>
+                <th scope="row">{{  u.idUsuario }}</th>
+                <td>{{  u.nombre }}</td>
+                <td>{{  u.email}}</td>
+                <td>{{ u.fechaRegistro }}</td>
+                <td>{{ u.rol.nombre}}</td>
+                <td>
+                  <button class="btn btn-sm btn-primary me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editarUsuarioModal"
+                    (click)="abrirModalEditar(u)" title="Editar Usuario">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button class="btn btn-sm btn-danger me-2" (click)="abrirModalEliminar(u)" title="Eliminar Usuario">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          }@else {
+            <tr><td colspan="6">No hay usuarios registrados.</td></tr>
+          }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div
+  class="modal fade"
+  id="nuevoUsuarioModal"
+  tabindex="-1"
+  aria-labelledby="nuevoUsuarioModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="nuevoUsuarioModalLabel">Nuevo Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form #usuarioForm="ngForm" (ngSubmit)="crearUsuario(usuarioForm.value)">
+          <div class="mb-3">
+            <label class="form-label">ID Usuario</label>
+            <input type="text" class="form-control" name="idUsuario" ngModel required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="nombre" ngModel required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input type="email" class="form-control" name="email" ngModel required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Rol</label>
+            <select class="form-select" name="rol" ngModel required>
+              <option value="" disabled selected>Selecciones un rol</option>
+              <option value="Administrador">Administrador</option>
+              <option value="Cocinero">Cocinero</option>
+              <option value="Mesero">Mesero</option>
+              <option value="Cajero">Cajero</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="password" ngModel required>
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-success">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="editarUsuarioModal" tabindex="-1" aria-labelledby="editarUsuarioLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editarUsuarioLabel">Editar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <div class="modal-body">
+        <form #editarForm="ngForm" (ngSubmit)="actualizarUsuario(editarForm)">
+          <div class="mb-3">
+            <label class="form-label">ID Usuario</label>
+            <input type="text" class="form-control" name="idUsuario"  readonly>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" name="nombre"  required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input type="email" class="form-control" name="email" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Rol</label>
+            <select class="form-select" name="rol" required>
+              <option value="ADMIN">Administrador</option>
+              <option value="EMPLEADO">Empleado</option>
+            </select>
+          </div>
+
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">Actualizar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--<div class="modal fade" id="eliminarUsuarioModal" tabindex="-1" aria-labelledby="eliminarUsuarioLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title">Eliminar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        ¿Seguro que deseas eliminar al usuario <strong>{{ usuarioSeleccionado?.nombre }}</strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="confirmarEliminar()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>-->

@@ -1,0 +1,12 @@
+.row.text-center.mb-3>.col-sm-3 {
+  display: flex;
+}
+
+.row.text-center.mb-3>.col-sm-3>div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 160px;
+  /* <-- ajusta si quieres más altas */
+}

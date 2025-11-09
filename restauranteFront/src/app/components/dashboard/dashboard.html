@@ -1,0 +1,47 @@
+<p>dashboard works!</p>
+<div class="container-fluid">
+  <div class="row min-vh-100">
+
+    <!-- Sidebar -->
+    <nav class="col-md-3 col-lg-2 bg-light border-end p-3">
+      <h5 class="fw-bold mb-4">Menú</h5>
+      <ul class="nav flex-column">
+        <li class="nav-item mb-2">
+          <a routerLink="panelControl" class="p-3 border border-primary rounded nav-link text-dark well-hover">
+            <i class="bi bi-house-door"></i> Panel de control
+          </a>
+        </li>
+        <li class="nav-item mb-2">
+          <a routerLink="gestionUsuario" class="p-3 border border-primary rounded nav-link text-dark well-hover">
+            <i class="bi bi-people"></i> Gestión de usuarios
+          </a>
+        </li>
+        <li class="nav-item mb-2">
+          <a routerLink="gestionMesas" class="p-3 border border-primary rounded nav-link text-dark well-hover">
+            <i class="bi bi-table"></i> Gestión de mesas
+          </a>
+        </li>
+        <li class="nav-item mb-2">
+          <a routerLink="panelCocina" class="p-3 border border-primary rounded nav-link text-dark well-hover">
+            <i class="bi bi-egg-fried"></i> Panel cocina
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="reportes" class="p-3 border border-primary rounded nav-link text-dark well-hover">
+            <i class="bi bi-journal-text"></i> Reportes
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="col-md-9 col-lg-10 p-4">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>
+
+<!-- Footer moderno -->
+<footer class="bg-primary text-white text-center py-3 mt-auto">
+  <p class="mb-0">© 2025 Restaurante - Panel de Control</p>
+</footer>
