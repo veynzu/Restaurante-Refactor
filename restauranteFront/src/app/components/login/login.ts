@@ -23,7 +23,7 @@ export class Login {
 
   onLogin() {
     const formValue = this.loginForm.value;
-    this.http.post('http://20.81.129.60:8080/api/auth/login', formValue).subscribe({
+    this.http.post('http://localhost:8080/api/auth/login', formValue).subscribe({
       next: (response: any) => {
         if (response.token) {
           alert('✅ Login exitoso');

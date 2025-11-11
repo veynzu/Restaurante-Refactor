@@ -17,7 +17,7 @@ export class Dashboard {
   }
 
   getUser(){
-    this.http.get("http://20.81.129.60:8080/api/usuarios").subscribe({
+    this.http.get("http://localhost:8080/api/usuarios").subscribe({
       next:(response)=>{
 
       },

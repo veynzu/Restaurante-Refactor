@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+restauranteFront/node_modules/
+restauranteFront/dist/
