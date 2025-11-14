@@ -529,14 +529,31 @@ export class GestionMesas implements OnInit {
   }
 
   formatearMoneda(valor: number): string {
-    return new Intl.NumberFormat('es-ES', {
+    if (valor == null || isNaN(valor)) {
+      return '$0';
+    }
+    return new Intl.NumberFormat('es-CO', {
       style: 'currency',
-      currency: 'EUR'
+      currency: 'COP',
+      minimumFractionDigits: 0
     }).format(valor);
   }
 
   imprimirFactura(): void {
     if (!this.facturacionMesa) return;
+    
+    // Filtrar solo las comandas completadas y NO pagadas (cliente actual)
+    const comandasClienteActual = this.facturacionMesa.comandas.filter(c => 
+      (c.estado === 'Completado' || c.estado === 'Completada') && !c.pagada
+    );
+    
+    if (comandasClienteActual.length === 0) {
+      alert('No hay comandas pendientes de pago para esta factura');
+      return;
+    }
+    
+    // Calcular el total solo de las comandas del cliente actual
+    const totalClienteActual = comandasClienteActual.reduce((sum, c) => sum + c.total, 0);
     
     // Crear ventana de impresión
     const ventanaImpresion = window.open('', '_blank');
@@ -568,35 +585,34 @@ export class GestionMesas implements OnInit {
         </div>
         <div class="info">
           <p><strong>Mesa:</strong> ${this.facturacionMesa.idMesa} - ${this.facturacionMesa.ubicacionMesa}</p>
-          <p><strong>Fecha:</strong> ${new Date().toLocaleString('es-ES')}</p>
+          <p><strong>Fecha:</strong> ${new Date().toLocaleString('es-CO')}</p>
+          <p><strong>Comandas incluidas:</strong> ${comandasClienteActual.length}</p>
         </div>
         <table>
           <thead>
             <tr>
               <th>ID Comanda</th>
               <th>Fecha</th>
-              <th>Estado</th>
               <th>Mesero</th>
               <th>Productos</th>
               <th style="text-align: right;">Total</th>
             </tr>
           </thead>
           <tbody>
-            ${this.facturacionMesa.comandas.map(c => `
+            ${comandasClienteActual.map(c => `
               <tr>
                 <td>#${c.idComanda}</td>
                 <td>${this.formatearFecha(c.fecha)}</td>
-                <td>${c.estado}</td>
                 <td>${c.mesero}</td>
-                <td>${c.cantidadProductos}</td>
+                <td>${c.cantidadProductos} producto(s)</td>
                 <td style="text-align: right;">${this.formatearMoneda(c.total)}</td>
               </tr>
             `).join('')}
           </tbody>
           <tfoot>
             <tr>
-              <td colspan="5" style="text-align: right;"><strong>TOTAL A PAGAR:</strong></td>
-              <td style="text-align: right;" class="total">${this.formatearMoneda(this.facturacionMesa.totalAPagar)}</td>
+              <td colspan="4" style="text-align: right;"><strong>TOTAL A PAGAR:</strong></td>
+              <td style="text-align: right;" class="total">${this.formatearMoneda(totalClienteActual)}</td>
             </tr>
           </tfoot>
         </table>

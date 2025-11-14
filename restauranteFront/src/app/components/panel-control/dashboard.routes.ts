@@ -4,7 +4,7 @@ import { PanelControl } from "./panel-control";
 import { GestionUsuarios } from "../gestion.usuarios/gestion.usuarios";
 import { GestionMesas } from "../gestion.mesas/gestion.mesas";
 import { PanelCocina } from "../panel.cocina/panel.cocina";
-import { Reportes } from "../reportes/reportes";
+// import { Reportes } from "../reportes/reportes"; // Componente no implementado aún
 
 export const dashboardRoutes: Routes = [
   {
@@ -32,10 +32,10 @@ export const dashboardRoutes: Routes = [
         path: 'panelCocina',
         component: PanelCocina,
       },
-      {
-        path: 'reportes',
-        component: Reportes,
-      },
+      // {
+      //   path: 'reportes',
+      //   component: Reportes,
+      // },
     ],
   },
 ];

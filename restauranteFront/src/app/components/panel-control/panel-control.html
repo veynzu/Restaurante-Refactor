@@ -77,16 +77,16 @@
         <h5 class="mb-3">Comandas por Estado</h5>
         <div class="row text-center">
           <div class="col-6 mb-2">
-            <span class="badge bg-warning">Pendiente: {{ estadisticas.comandasPorEstado?.['Pendiente'] || 0 }}</span>
+            <span class="badge bg-warning">Pendiente: {{ estadisticas.comandasPorEstado['Pendiente'] || 0 }}</span>
           </div>
           <div class="col-6 mb-2">
-            <span class="badge bg-info">En Preparación: {{ estadisticas.comandasPorEstado?.['En Preparacion'] || 0 }}</span>
+            <span class="badge bg-info">En Preparación: {{ estadisticas.comandasPorEstado['En Preparacion'] || 0 }}</span>
           </div>
           <div class="col-6">
-            <span class="badge bg-success">Completada: {{ estadisticas.comandasPorEstado?.['Completada'] || 0 }}</span>
+            <span class="badge bg-success">Completada: {{ estadisticas.comandasPorEstado['Completada'] || 0 }}</span>
           </div>
           <div class="col-6">
-            <span class="badge bg-danger">Cancelada: {{ estadisticas.comandasPorEstado?.['Cancelada'] || 0 }}</span>
+            <span class="badge bg-danger">Cancelada: {{ estadisticas.comandasPorEstado['Cancelada'] || 0 }}</span>
           </div>
         </div>
       </div>

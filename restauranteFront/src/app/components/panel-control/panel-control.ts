@@ -1,5 +1,4 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
 import { DashboardService, DashboardEstadisticas } from '../../service/dashboard.service';
 import { ProductoService, Producto, ProductoCreateRequest } from '../../service/producto.service';
 import { CategoriaService, Categoria } from '../../service/categoria.service';
@@ -11,7 +10,7 @@ declare var bootstrap: any;
 
 @Component({
   selector: 'app-panel-control',
-  imports: [RouterOutlet, RouterLink, CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './panel-control.html',
   styleUrl: './panel-control.css'
 })
