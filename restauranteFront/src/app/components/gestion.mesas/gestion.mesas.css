@@ -1,0 +1,116 @@
+.mesa-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-left: 4px solid transparent !important;
+}
+
+.mesa-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.mesa-card.border-success {
+  border-left-color: #198754 !important;
+}
+
+.mesa-card.border-danger {
+  border-left-color: #dc3545 !important;
+}
+
+.mesa-card.border-warning {
+  border-left-color: #ffc107 !important;
+}
+
+.mesa-card.border-secondary {
+  border-left-color: #6c757d !important;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.badge {
+  font-size: 0.85rem;
+  padding: 0.35em 0.65em;
+}
+
+.btn-group .btn {
+  font-size: 0.85rem;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mesa-card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mesa-card {
+    margin-bottom: 1rem;
+  }
+  
+  .btn-group {
+    flex-direction: column;
+  }
+  
+  .btn-group .btn {
+    width: 100%;
+    margin-bottom: 0.25rem;
+  }
+}
+
+/* Estadísticas cards */
+.card {
+  border-radius: 0.5rem;
+}
+
+.card-body h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Filtros */
+.form-label {
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+/* Modal */
+.modal-content {
+  border-radius: 0.5rem;
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  border-bottom: 1px solid #dee2e6;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+}
+
+/* Iconos Bootstrap */
+.bi {
+  font-size: 1.1em;
+  vertical-align: -0.125em;
+}
+

@@ -1,0 +1,42 @@
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Archivos comprimidos temporales
+*.zip
+*.tar.gz
+
+# Logs
+*.log
+
+# Node modules (Frontend)
+restauranteFront/node_modules/
+restauranteFront/dist/
+restauranteFront/.angular/
+
+# Maven (Backend)
+demo/target/
+demo/.mvn/wrapper/maven-wrapper.jar
+
+# Archivos de configuración local
+*.local
+.env
+.cursorrules
+
+# Archivos de base de datos
+*.db
+*.sqlite
+
+# Archivos temporales
+*.tmp
+*.temp

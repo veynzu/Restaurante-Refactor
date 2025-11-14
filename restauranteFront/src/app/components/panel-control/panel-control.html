@@ -1,0 +1,361 @@
+<div class="container">
+  <div class="col-12 mb-3">
+    <div class="py-2 px-4 bg-light border rounded shadow-sm">
+      <h4>Panel de Control</h4>
+      <p>Resumen de las operaciones del restaurante.</p>
+    </div>
+  </div>
+
+  <div class="row text-center mb-3" *ngIf="!cargando && estadisticas">
+    <div class="col-sm-3">
+      <div class="p-3 bg-light border rounded shadow-sm">
+        <p>Estado de mesas</p>
+        <h4>{{ estadisticas.mesasOcupadas }}/{{ estadisticas.totalMesas }} Ocupadas</h4>
+        <p>Mesas actualmente en uso</p>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="p-3 bg-light border rounded shadow-sm">
+        <p>Meseros Activos</p>
+        <h4>{{ estadisticas.meserosActivos }}</h4>
+        <p>Meseros actualmente en turno</p>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="p-3 bg-light border rounded shadow-sm">
+        <p>Ordenes de cocina</p>
+        <h4>{{ estadisticas.ordenesEnPreparacion }}</h4>
+        <p>Órdenes esperando preparación</p>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="p-3 bg-light border rounded shadow-sm">
+        <p>Ventas de hoy</p>
+        <h4>{{ formatearMoneda(estadisticas.ventasHoy) }}</h4>
+        <p>Ingresos totales del día</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row text-center mb-3" *ngIf="cargando">
+    <div class="col-12">
+      <div class="p-3 bg-light border rounded shadow-sm">
+        <p>Cargando estadísticas...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row text-center mb-3" *ngIf="error">
+    <div class="col-12">
+      <div class="p-3 bg-danger text-white border rounded shadow-sm">
+        <p>{{ error }}</p>
+        <button class="btn btn-light btn-sm mt-2" (click)="cargarEstadisticas()">Reintentar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Información adicional -->
+  <div class="row mb-3" *ngIf="!cargando && estadisticas">
+    <!-- Ventas de la semana y Total productos -->
+    <div class="col-md-6 mb-3">
+      <div class="p-3 bg-light border rounded shadow-sm">
+        <h5 class="mb-3">Resumen Financiero</h5>
+        <div class="d-flex justify-content-between mb-2">
+          <span>Ventas de la semana:</span>
+          <strong class="text-success">{{ formatearMoneda(estadisticas.ventasSemana || 0) }}</strong>
+        </div>
+        <div class="d-flex justify-content-between">
+          <span>Total de productos:</span>
+          <strong>{{ estadisticas.totalProductos || 0 }}</strong>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Comandas por estado -->
+    <div class="col-md-6 mb-3">
+      <div class="p-3 bg-light border rounded shadow-sm">
+        <h5 class="mb-3">Comandas por Estado</h5>
+        <div class="row text-center">
+          <div class="col-6 mb-2">
+            <span class="badge bg-warning">Pendiente: {{ estadisticas.comandasPorEstado?.['Pendiente'] || 0 }}</span>
+          </div>
+          <div class="col-6 mb-2">
+            <span class="badge bg-info">En Preparación: {{ estadisticas.comandasPorEstado?.['En Preparacion'] || 0 }}</span>
+          </div>
+          <div class="col-6">
+            <span class="badge bg-success">Completada: {{ estadisticas.comandasPorEstado?.['Completada'] || 0 }}</span>
+          </div>
+          <div class="col-6">
+            <span class="badge bg-danger">Cancelada: {{ estadisticas.comandasPorEstado?.['Cancelada'] || 0 }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comandas recientes y Productos más vendidos -->
+  <div class="row" *ngIf="!cargando && estadisticas">
+    <!-- Comandas recientes -->
+    <div class="col-md-8 mb-3">
+      <div class="p-3 bg-light border rounded shadow-sm">
+        <h5 class="mb-3">Comandas Recientes</h5>
+        <div class="table-responsive" *ngIf="estadisticas.comandasRecientes && estadisticas.comandasRecientes.length > 0">
+          <table class="table table-sm table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Mesa</th>
+                <th>Mesero</th>
+                <th>Estado</th>
+                <th>Total</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let comanda of estadisticas.comandasRecientes">
+                <td>#{{ comanda.id }}</td>
+                <td>{{ comanda.mesa || 'N/A' }}</td>
+                <td>{{ comanda.mesero || 'N/A' }}</td>
+                <td>
+                  <span class="badge" [ngClass]="'bg-' + obtenerColorEstado(comanda.estado)">
+                    {{ comanda.estado || 'N/A' }}
+                  </span>
+                </td>
+                <td>{{ formatearMoneda(comanda.total) }}</td>
+                <td class="small">{{ formatearFecha(comanda.fecha) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p *ngIf="!estadisticas.comandasRecientes || estadisticas.comandasRecientes.length === 0" class="text-muted text-center py-3">
+          No hay comandas recientes
+        </p>
+      </div>
+    </div>
+    
+    <!-- Productos más vendidos -->
+    <div class="col-md-4 mb-3">
+      <div class="p-3 bg-light border rounded shadow-sm">
+        <h5 class="mb-3">Productos Más Vendidos</h5>
+        <div *ngIf="estadisticas.productosMasVendidos && estadisticas.productosMasVendidos.length > 0">
+          <div class="list-group list-group-flush">
+            <div class="list-group-item d-flex justify-content-between align-items-center px-0" 
+                 *ngFor="let producto of estadisticas.productosMasVendidos; let i = index">
+              <div>
+                <span class="badge bg-primary me-2">{{ i + 1 }}</span>
+                <strong>{{ producto.nombre }}</strong>
+                <br>
+                <small class="text-muted">{{ producto.cantidadVendida }} unidades</small>
+              </div>
+              <span class="text-success">{{ formatearMoneda(producto.precio) }}</span>
+            </div>
+          </div>
+        </div>
+        <p *ngIf="!estadisticas.productosMasVendidos || estadisticas.productosMasVendidos.length === 0" class="text-muted text-center py-3">
+          No hay productos vendidos aún
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de Gestión de Productos -->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="bi bi-box-seam me-2"></i>Gestión de Productos
+          </h5>
+          <button class="btn btn-light btn-sm" (click)="abrirModalNuevoProducto()">
+            <i class="bi bi-plus-circle me-2"></i>Nuevo Producto
+          </button>
+        </div>
+        <div class="card-body">
+          <!-- Búsqueda -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Buscar por nombre o categoría..."
+                [(ngModel)]="terminoBusquedaProductos">
+            </div>
+            <div class="col-md-6 text-end">
+              <span class="text-muted">
+                Total: {{ productos.length }} productos
+              </span>
+            </div>
+          </div>
+
+          <!-- Tabla de Productos -->
+          <div *ngIf="cargandoProductos" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2">Cargando productos...</p>
+          </div>
+
+          <div *ngIf="!cargandoProductos && buscarProductos().length === 0" class="alert alert-info text-center">
+            No se encontraron productos.
+          </div>
+
+          <div *ngIf="!cargandoProductos && buscarProductos().length > 0" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Categoría</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let producto of buscarProductos()">
+                  <td>{{ producto.idProducto }}</td>
+                  <td><strong>{{ producto.nombre }}</strong></td>
+                  <td>
+                    <span class="badge bg-secondary">
+                      {{ obtenerNombreCategoria(producto.categoria) }}
+                    </span>
+                  </td>
+                  <td>{{ formatearMoneda(producto.precio) }}</td>
+                  <td>
+                    <span [ngClass]="{'text-danger': producto.stock === 0, 'text-warning': producto.stock < 10}">
+                      {{ producto.stock }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="producto.estado ? 'bg-success' : 'bg-danger'">
+                      {{ producto.estado ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                      <button
+                        type="button"
+                        class="btn btn-sm"
+                        [ngClass]="producto.estado ? 'btn-warning' : 'btn-success'"
+                        (click)="toggleEstadoProducto(producto)"
+                        [title]="producto.estado ? 'Desactivar' : 'Activar'">
+                        <span *ngIf="producto.estado">🔴</span>
+                        <span *ngIf="!producto.estado">🟢</span>
+                        {{ producto.estado ? ' Desactivar' : ' Activar' }}
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-danger"
+                        (click)="abrirModalEliminar(producto)"
+                        title="Eliminar">
+                        🗑️ Eliminar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Nuevo Producto -->
+<div class="modal fade" id="nuevoProductoModal" tabindex="-1" aria-labelledby="nuevoProductoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="nuevoProductoModalLabel">
+          <i class="bi bi-plus-circle me-2"></i>Nuevo Producto
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form #productoForm="ngForm" (ngSubmit)="crearProducto()">
+          <div class="mb-3">
+            <label class="form-label">Nombre <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="nombre"
+              [(ngModel)]="nuevoProducto.nombre"
+              placeholder="Ej: Hamburguesa Clásica"
+              required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Categoría <span class="text-danger">*</span></label>
+            <select
+              class="form-select"
+              name="categoria"
+              [ngModel]="nuevoProducto.idCategoria"
+              (ngModelChange)="nuevoProducto.idCategoria = +$event"
+              required>
+              <option [value]="0" disabled>Seleccione una categoría</option>
+              <option *ngFor="let categoria of categorias" [value]="categoria.idCategoria">
+                {{ categoria.nombre }} (ID: {{ categoria.idCategoria }})
+              </option>
+            </select>
+            <small class="form-text text-muted" *ngIf="nuevoProducto.idCategoria && nuevoProducto.idCategoria !== 0">
+              Categoría seleccionada: ID {{ nuevoProducto.idCategoria }}
+            </small>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Precio <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                name="precio"
+                [(ngModel)]="nuevoProducto.precio"
+                min="0"
+                step="0.01"
+                placeholder="0.00"
+                required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Stock Inicial</label>
+              <input
+                type="number"
+                class="form-control"
+                name="stock"
+                [(ngModel)]="nuevoProducto.stock"
+                min="0"
+                placeholder="0"
+                required>
+            </div>
+          </div>
+          <div class="text-end">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Eliminar Producto -->
+<div class="modal fade" id="eliminarProductoModal" tabindex="-1" aria-labelledby="eliminarProductoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="eliminarProductoModalLabel">Confirmar Eliminación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body" *ngIf="productoEliminar">
+        <p>¿Estás seguro de que deseas eliminar el producto <strong>{{ productoEliminar.nombre }}</strong>?</p>
+        <div class="alert alert-warning" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          Esta acción no se puede deshacer. El producto será eliminado permanentemente.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" (click)="eliminarProducto()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

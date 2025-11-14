@@ -1,0 +1,121 @@
+.sidenav {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.sidenav .sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidenav .sidebar-nav a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  /* Se ajusta al ancho del sidenav */
+  padding: 10px 12px;
+  text-decoration: none;
+  color: #333;
+  background-color: #fff;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+}
+
+.sidenav .sidebar-nav a:hover {
+  background-color: #007bff;
+  color: #fff;
+  transform: translateX(4px);
+}
+
+.sidenav .sidebar-nav i {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.well-hover {
+  transition: all 0.3s ease;
+  /* Suaviza el cambio */
+}
+
+.well-hover:hover {
+  background-color: var(--bs-primary) !important;
+  /* color azul Bootstrap */
+  color: white !important;
+  /* texto blanco */
+  border-color: var(--bs-primary) !important;
+}
+.well-hover:hover * {
+  color: #fff !important;
+}
+.container-fluid,
+.row,
+.col-sm-3,
+.col-sm-9 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Ajusta el margen de la columna principal */
+.col-sm-9 {
+  margin-left: 0 !important;
+}
+
+/* Reduce el espacio interno del contenido */
+.row.content {
+  margin: 0 !important;
+  padding: 10px 15px !important; /* deja un pequeño margen interior */
+}
+
+/* Opcional: haz que el menú ocupe todo el alto de la pantalla */
+.sidenav {
+  height: 100vh;
+  padding-top: 20px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #ddd;
+}
+
+/* Ajusta los divs internos del dashboard */
+.well, .card, .border {
+  margin-bottom: 10px !important;
+  padding: 10px !important;
+}
+
+/* Elimina márgenes laterales y entre filas */
+.container-fluid {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Ajusta las columnas para eliminar margen inferior */
+.col-sm-3,
+.col-sm-4,
+.col-sm-8,
+.col-sm-9 {
+  margin-bottom: 0 !important;
+  padding: 5px !important;
+  /* reduce espacio entre los divs */
+}
+
+/* Opcional: reduce margen inferior entre los “well” */
+.well,
+.card,
+.border {
+  margin-bottom: 5px !important;
+}
+
+/* Para que el contenido principal se pegue al menú lateral */
+.row.content {
+  margin: 0 !important;
+  padding: 0 10px !important;
+  /* puedes aumentar este valor si queda muy pegado */
+}

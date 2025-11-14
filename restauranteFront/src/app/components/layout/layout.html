@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="javascript:void(0)">Logo</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar" aria-controls="mynavbar" aria-expanded="false" aria-label="Toggle navigation" title="Abrir menú">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+      <div class="d-flex align-items-center text-white me-3">
+        👤 {{ nombreUsuario }} ({{ rol }})
+      </div>
+      <div>
+        <form class="d-flex">
+        <button class="btn btn-light custom-btn ms-auto" (click)="onlogoff()"  type="button">Cerrar Sesion</button>
+      </form>
+      </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>
